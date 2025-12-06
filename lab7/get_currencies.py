@@ -2,11 +2,22 @@ import functools
 import io
 from datetime import datetime
 import requests
+import sys
+import logging
 from my_logger import logger
 
-error_stream = io.StringIO()
+# logging.basicConfig(
+#     filename='log1.log',      # ← имя файла
+#     filemode='a',               # 'a' = добавлять, 'w' = перезаписывать
+#     level=logging.INFO,         # минимальный уровень логов
+#     format='%(asctime)s - %(levelname)s - %(message)s',
+#     encoding='utf-8'            # чтобы кириллица работалаsls -lls
+# )
+# log = logging.getLogger("l1")
+# log.setLevel(logging.INFO)
 
-@logger(handle = error_stream)
+# @logger(handle = log)
+# @logger()
 def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru/daily_json.js")->dict:
     """
     Получает курсы валют с API Центробанка России.
@@ -21,7 +32,6 @@ def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru
     try:
 
         response = requests.get(url)
-
         response.raise_for_status()  # Проверка на ошибки HTTP
 
         try:
@@ -39,7 +49,7 @@ def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru
                         raise TypeError(f"Курс валюты '{code}' имеет неверный тип")
                     currencies[code] = data["Valute"][code]["Value"]
                 else:
-                    raise KeyError(f"Код валюты '{code}' не найден")
+                    currencies[code] = f"Код валюты '{code}' не найден"
         else :
             raise KeyError(f"Нет ключа Valute")
         return currencies
@@ -53,6 +63,4 @@ def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru
     except requests.exceptions.RequestException as e:
         raise ConnectionError(f"Ошибка запроса к API: {str(e)}")
     
-currency_list = {"USD", "BYN"}
-res = get_currencies(currency_list)
-print(error_stream.getvalue())
+print(get_currencies({'USD','BYN','XYZ'}))
