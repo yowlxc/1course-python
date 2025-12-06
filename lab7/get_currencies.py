@@ -2,9 +2,11 @@ import functools
 import io
 from datetime import datetime
 import requests
-from my_logger import logger, error_stream
+from my_logger import logger
 
-@logger
+error_stream = io.StringIO()
+
+@logger(handle = error_stream)
 def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru/daily_json.js")->dict:
     """
     Получает курсы валют с API Центробанка России.
