@@ -63,4 +63,3 @@ def get_currencies(currency_codes: list, url:str = "https://www.cbr-xml-daily.ru
     except requests.exceptions.RequestException as e:
         raise ConnectionError(f"Ошибка запроса к API: {str(e)}")
     
-print(get_currencies({'USD','BYN','XYZ'}))

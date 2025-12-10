@@ -1,5 +1,6 @@
 import unittest
 from get_currencies import get_currencies
+from unittest.mock import patch, Mock
 
 class TestGetCurrencies(unittest.TestCase):
 
@@ -23,15 +24,20 @@ class TestGetCurrencies(unittest.TestCase):
         with self.assertRaises(ConnectionError):
             get_currencies(['USD'], url="https://invalid-url")   
 
-    def test_invalid_json(self):
+    def test_InvalidJson(self):
         with self.assertRaises(ValueError) as cm:
             get_currencies(['USD'], url="https://example.com")
         self.assertIn("Некорректный JSON", str(cm.exception))
 
     def test_KeyError(self):
-        with self.assertRaises(ConnectionError):
-            get_currencies(['USD'], url="https://invalid-url") 
+        mock_response = Mock()
+        mock_response.raise_for_status = lambda: None
+        mock_response.json.return_value = {"SomeOtherKey": 123} 
 
+        with patch('get_currencies.requests.get', return_value=mock_response):
+            with self.assertRaises(KeyError) as cm:
+                get_currencies(["USD"])
+            self.assertEqual(cm.exception.args[0], "Нет ключа Valute")
 
 if __name__ == '__main__':
     unittest.main()

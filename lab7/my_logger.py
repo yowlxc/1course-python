@@ -7,11 +7,11 @@ def logger(func_non = None, *, handle = sys.stdout):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            timestamp_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             args_repr = [repr(a) for a in args]
             kwargs_repr = [f"{k}={repr(v)}" for k, v in kwargs.items()]
             signature = ", ".join(args_repr + kwargs_repr)
-            start_msg = f"[{timestamp()}] [INFO] Вызов функции {func.__name__}({signature})"
+            start_msg = f"[{timestamp_1}] [INFO] Вызов функции {func.__name__}({signature})"
             if isinstance(handle, logging.Logger):
                 handle.info(start_msg)
             elif hasattr(handle, 'write'):
@@ -21,8 +21,8 @@ def logger(func_non = None, *, handle = sys.stdout):
 
             try:
                 result = func(*args, **kwargs)
-                # timestamp_end = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                end_msg = f"[{timestamp()}] [INFO] Функция {func.__name__} завершена успешно. Результат: {repr(result)}"
+                timestamp_end = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                end_msg = f"[{timestamp_end}] [INFO] Функция {func.__name__} завершена успешно. Результат: {repr(result)}"
                 if isinstance(handle, logging.Logger):
                     handle.info(end_msg)
                 elif hasattr(handle, 'write'):
@@ -30,7 +30,8 @@ def logger(func_non = None, *, handle = sys.stdout):
                 return result
 
             except Exception as e:
-                error_msg = f"[{timestamp()}] [ERROR] {type(e).__name__}: {e}"
+                timestamp_err = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                error_msg = f"[{timestamp_err}] [ERROR] {type(e).__name__}: {e}"
                 if isinstance(handle, logging.Logger):
                     handle.error(error_msg)
                 elif hasattr(handle, 'write'):
@@ -40,5 +41,3 @@ def logger(func_non = None, *, handle = sys.stdout):
         return wrapper
     return decorator
 
-def timestamp():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")

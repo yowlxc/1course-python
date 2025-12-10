@@ -3,12 +3,12 @@ import io
 import logging
 from my_logger import logger
 from get_currencies import get_currencies
+from unittest.mock import patch, Mock
 
 
 class TestDecoratorLogging(unittest.TestCase):
 
     def setUp(self):
-        # создается поток StringIO
         self.stream = io.StringIO()
 
         @logger(handle=self.stream)
@@ -19,56 +19,36 @@ class TestDecoratorLogging(unittest.TestCase):
 
         self.wrapped = wrapped_get_currencies
 
-    def test_logging_success(self):
-        """Проверка логирования успешного вызова через StringIO"""
+    #Проверка логирования успешного вызова через StringIO
+    def test_SuccessTry(self):
         result = self.wrapped(['USD'])
-        logs = self.stream.getvalue()
-
-        self.assertIn("[INFO] Вызов wrapped_get_currencies(['USD'])", logs)
-        self.assertIn("[INFO] Функция wrapped_get_currencies завершена успешно. Результат: ", logs)
+        self.assertRegex(self.stream.getvalue(), "INFO")
+        self.assertRegex(self.stream.getvalue(), "Функция wrapped_get_currencies завершена успешно. Результат: ")
+        self.assertRegex(self.stream.getvalue(), "Вызов функции wrapped_get_currencies")
         self.assertIn("USD", str(result))
         self.assertIsInstance(result['USD'], float)
 
-    # def test_logging_connection_error(self):
-    #     """Проверка логирования ConnectionError через декоратор"""
-    #     with self.assertRaises(ConnectionError):
-    #         self.wrapped(['USD'], url="https://invalid-url")
+    #Проверка логирования ConnectionError через декоратор
+    def test_ConnectionError(self):
+        with self.assertRaises(ConnectionError):
+            self.wrapped(['USD'], url="https://invalid-url") 
 
-    #     logs = self.stream.getvalue()
-    #     self.assertIn("ERROR", logs)
-    #     self.assertIn("ConnectionError", logs)
-    #     self.assertIn("API недоступен", logs)
+        self.assertRegex(self.stream.getvalue(), "ERROR")
+        self.assertRegex(self.stream.getvalue(), "ConnectionError")
+        self.assertRegex(self.stream.getvalue(), "API недоступен")
 
-    # def test_logging_key_error(self):
-    #     """Проверка логирования KeyError через декоратор"""
-    #     with self.assertRaises(KeyError):
-    #         self.wrapped(['XYZ'])  # Несуществующая валюта
+    #Проверка логирования KeyError через декоратор
+    def test_KeyError(self):
+        mock_response = Mock()
+        mock_response.raise_for_status = lambda: None
+        mock_response.json.return_value = {"SomeOtherKey": 123} 
 
-    #     logs = self.stream.getvalue()
-    #     self.assertIn("ERROR", logs)
-    #     self.assertIn("KeyError", logs)
-    #     self.assertIn("XYZ", logs)
+        with patch('get_currencies.requests.get', return_value=mock_response):
+            with self.assertRaises(KeyError) as cm:
+                self.wrapped(["USD"])
 
-    # def test_logging_with_logger_object(self):
-    #     """Проверка логирования через logging.Logger"""
-    #     log_stream = io.StringIO()
-    #     test_logger = logging.getLogger("test_logger")
-    #     test_logger.setLevel(logging.INFO)
-    #     handler = logging.StreamHandler(log_stream)
-    #     formatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
-    #     handler.setFormatter(formatter)
-    #     test_logger.addHandler(handler)
-
-    #     @logger(handle=test_logger)
-    #     def test_func():
-    #         return "OK"
-
-    #     result = test_func()
-    #     log_content = log_stream.getvalue()
-    #     self.assertEqual(result, "OK")
-    #     self.assertIn("[INFO]test_logger:[INFO] Вызов функции test_func()", log_content)
-    #     self.assertIn("[INFO]test_logger:[INFO]Функция test_func завершена успешно. Результат:'OK'", log_content)
-
+        self.assertRegex(self.stream.getvalue(), "ERROR")
+        self.assertRegex(self.stream.getvalue(), "KeyError")
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
