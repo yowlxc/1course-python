@@ -10,8 +10,28 @@ class TestGetCurrencies(unittest.TestCase):
         self.assertIn('USD', res) 
         self.assertIsInstance(res['USD'], (float))
 
-    # def test_ValuteNotExist (self):
-    #     self.assertEqual(get_currencies({'USD', 'BYN','XYZ'}), {'USD': 76.0937, 'XYZ': "Код валюты 'XYZ' не найден", 'BYN': 26.4517})       
+    def test_ValuteNotExist (self):
+        res = get_currencies({'USD', 'BYN','XYZ'})
+        self.assertIn('BYN', res)     
+        self.assertIsInstance(res['BYN'], (float))
+        self.assertIn('USD', res) 
+        self.assertIsInstance(res['USD'], (float))   
+        self.assertIn('XYZ', res) 
+        self.assertIsInstance(res['XYZ'], (str))  
+
+    def test_ConnectionError(self):
+        with self.assertRaises(ConnectionError):
+            get_currencies(['USD'], url="https://invalid-url")   
+
+    def test_invalid_json(self):
+        with self.assertRaises(ValueError) as cm:
+            get_currencies(['USD'], url="https://example.com")
+        self.assertIn("Некорректный JSON", str(cm.exception))
+
+    def test_KeyError(self):
+        with self.assertRaises(ConnectionError):
+            get_currencies(['USD'], url="https://invalid-url") 
+
 
 if __name__ == '__main__':
     unittest.main()
