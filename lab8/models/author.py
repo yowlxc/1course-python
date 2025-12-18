@@ -1,3 +1,6 @@
+# name — имя автора
+# group — учебная группа
+
 class Author():
     def __init__(self, name: str, group: str):
         self.__name: str = name
@@ -16,7 +19,7 @@ class Author():
 
     @property
     def group(self):
-        return self.__group
+        return self.__groupname
 
     @group.setter
     def group(self, group: str):
