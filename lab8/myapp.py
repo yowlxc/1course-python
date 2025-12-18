@@ -1,3 +1,8 @@
+# / — главная страница с информацией о приложении и авторе
+# /users — список пользователей
+# /user?id=... — информация о конкретном пользователе и его подписках
+# /currencies — список валют с текущими курсами
+# /author — информация об авторе
 from jinja2 import Environment, PackageLoader, select_autoescape
 from models import author
 
