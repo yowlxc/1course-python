@@ -3,6 +3,7 @@
 # /user?id=... — информация о конкретном пользователе и его подписках
 # /currencies — список валют с текущими курсами
 # /author — информация об авторе
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from jinja2 import Environment, PackageLoader, select_autoescape
 from models import author
 
@@ -38,7 +39,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         result = "<html><h1>Hello, world!</h1></html>"
         self.wfile.write(bytes(result, "utf-8"))
 
-httpd = HTTPServer(('localhost, 8080'), HTTPRequestHandler)
+httpd = HTTPServer(('', 8088), SimpleHTTPRequestHandler)
 
 if __name__ == "__main__":
     print('server is running')

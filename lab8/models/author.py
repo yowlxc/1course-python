@@ -19,7 +19,7 @@ class Author():
 
     @property
     def group(self):
-        return self.__groupname
+        return self.__group
 
     @group.setter
     def group(self, group: str):
