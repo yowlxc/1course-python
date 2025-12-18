@@ -1,46 +1,62 @@
-# / — главная страница с информацией о приложении и авторе
-# /users — список пользователей
-# /user?id=... — информация о конкретном пользователе и его подписках
-# /currencies — список валют с текущими курсами
-# /author — информация об авторе
-from http.server import BaseHTTPRequestHandler, HTTPServer
 from jinja2 import Environment, PackageLoader, select_autoescape
-from models import author
+from models import Author, User
 
-main_author = author.Author('Nastya','P3121')
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from urllib.parse import parse_qs
+from utils.currencies_api import get_currencies
+
+navigation =[{'caption': 'Основная страница',
+                                   'href': "/" },
+                                   {'caption': 'Авторизация',
+                                    'href': "/autorization"},
+                                   {'caption': 'Пользователи',
+                                    'href': "/users"},
+                                   {'caption': 'Выход',
+                                    'href': "/logout"},
+                                    {'caption': 'Яндекс',
+                                    'href': "https://google.com"},
+                                   {'caption': 'Курсы валют',
+                                    'href': "/courses"}]
+
+users = [User(1, 'Nastya'), User(2, 'Vladimir')]
+
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        print("Вызвана страница: " + self.path)
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.end_headers()
+
+        if self.path == '/users':
+            result = users_template.render(users = users, navigation = navigation)
+        elif self.path == '/courses':
+            courses = get_currencies(['USD', 'BYN', 'EUR'])
+            for key, value in courses.items():
+                print(f"Ключ: {key}, Значение: {value}") 
+            result = courses_template.render(courses = courses, navigation = navigation)
+        else:
+            result = template.render(myapp="CurrenciesListApp",
+                            navigation = navigation,
+                        author_name = main_author.name,
+                        group = main_author.group
+                        )
+        self.wfile.write(bytes(result, "utf-8"))
+
+
 env = Environment(
     loader=PackageLoader("myapp"),
     autoescape=select_autoescape()
 )
 
 template = env.get_template("index.html")
+users_template = env.get_template("users.html")
+courses_template = env.get_template("courses.html")
 
-print(template.render(myapp="Приложение для отслеживания курсов валют",
-                      navigation =[{'main_page': 'Основная страница',
-                                   'href': "https://nastyapir_p3121.ru" },
-                                   {'autorization': 'Авторизация',
-                                    'href': "https://autorization.ru"},
-                                   {'user': 'Пользователь',
-                                    'href': "https://user_page.ru"},
-                                   {'logout': 'Выход',
-                                    'href': "https://logout.ru"},
-                                   {'courses': 'Курсы валют',
-                                    'href': "https://courses.ru"}],
-                      author_name = main_author.name,
-                      group = main_author.group
-                      ))
+main_author = Author('Nastya','P3121')
 
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+httpd = HTTPServer(('localhost', 8080), SimpleHTTPRequestHandler)
+print('server is running')
+httpd.serve_forever()
 
-    def to_GET(self):
-        self.send_response(200)
-        self.send_header('Content-Type', 'text/html; charset = utf-8')
-        self.end_headers()
-        result = "<html><h1>Hello, world!</h1></html>"
-        self.wfile.write(bytes(result, "utf-8"))
 
-httpd = HTTPServer(('', 8088), SimpleHTTPRequestHandler)
-
-if __name__ == "__main__":
-    print('server is running')
-    httpd.serve_forever()
+# http://127.0.0.1:8080/
