@@ -17,8 +17,8 @@ users = [
     User(1, 'Nastya Pirogova'),
     User(2, 'Vladimir Pirogov'),
     User(3, 'Maxim Klyuka'),
-    User(1, 'Vika Vodovozova'),
-    User(2, 'Natasha Karpova')
+    User(4, 'Vika Vodovozova'),
+    User(5, 'Natasha Karpova')
 ]
 
 user_currencies = [
