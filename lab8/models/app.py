@@ -1,7 +1,7 @@
 # name — название приложения
 # version — версия приложения
 # author — объект Author
-from author import Author
+from .author import Author
 
 class App():
     def __init__(self, name: str, version: str, author: Author):

@@ -1,4 +1,4 @@
-import unittest
+ceimport unittest
 
 def sum_of_2(nums, target):
     if int(len(nums)) < 2: return None 
@@ -19,7 +19,7 @@ class TestMath(unittest.TestCase):
         self.assertEqual(sum_of_2([3, 2, 4], 6), [1, 2])
         self.assertEqual(sum_of_2([3, 3], 6), [0, 1])
 
-    def test_2_positive(self):
+    def test_2_positive(self)
         self.assertEqual(sum_of_2([7, 3, 2, 10], 10), [0, 1])                     # крайние значение слева
 
     def test_3_positive(self):
