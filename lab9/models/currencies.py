@@ -15,11 +15,11 @@ class Currency:
 
     def __init__(
         self,
-        num_code: int,
+        num_code: str,
         char_code: str,
         name: str,
         value: float,
-        nominal: float
+        nominal: int
     ) -> None:
         """Инициализирует валюту.
 

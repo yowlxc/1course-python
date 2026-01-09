@@ -14,15 +14,14 @@ main_author = Author('Nastya Pirogova', 'P3121')
 main_app = App(name="Currency Tracker", version="1.0", author=main_author)
 
 users = [
-    User(1, 'Nastya Pirogova'),
-    User(2, 'Vladimir Pirogov'),
-    User(3, 'Maxim Klyuka'),
-    User(4, 'Vika Vodovozova'),
-    User(5, 'Natasha Karpova')
+    User('Nastya Pirogova'),
+    User('Vladimir Pirogov'),
+    User('Natasha Karpova'),
+    User('Vika Vodovozova'),
 ]
 
 user_currencies = [
-    UserCurrency(id=1, user_id=1, currency_id="USD"),  # Обратите внимание: теперь "USD", а не "R01235"
+    UserCurrency(id=1, user_id=1, currency_id="USD"),  
     UserCurrency(id=2, user_id=1, currency_id="EUR"),
     UserCurrency(id=3, user_id=2, currency_id="EUR"),
 ]
@@ -67,7 +66,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             nominal=1
                         ))
                 
-                self._render_courses(currencies)  # ← Исправлена опечатка!
+                self._render_courses(currencies)
             elif path == '/user':
                 user_id = query.get('id', [None])[0]
                 if user_id is None:
@@ -101,7 +100,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             nominal=1
                         ))
                 
-                self._render_user(user, user_currency_list)  # ← Исправлено имя метода!
+                self._render_user(user, user_currency_list) 
             else:
                 self._send_error(404, "Страница не найдена")
         except Exception as e:
