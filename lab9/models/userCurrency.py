@@ -1,25 +1,22 @@
 """Модуль с классом связи пользователя и валюты."""
 
-
-# id — уникальный идентификатор
-# user_id — внешний ключ к User
-# currency_id — внешний ключ к Currency
+from typing import NoReturn
 
 
 class UserCurrency:
-    """Представляет связь пользователя с валютой."""
+    """Представляет связь пользователя с валютой (подписку)."""
 
-    def __init__(self, id: int, user_id: int, currency_id: int) -> None:
+    def __init__(self, id_: int, user_id: int, currency_id: int) -> None:
         """Инициализирует связь пользователя и валюты.
 
         Args:
-            id: Уникальный идентификатор записи.
-            user_id: ID пользователя.
-            currency_id: ID валюты.
+            id_: Уникальный идентификатор записи.
+            user_id: Идентификатор пользователя.
+            currency_id: Идентификатор валюты.
         """
-        self.__id: int = id
-        self.__user_id: int = user_id
-        self.__currency_id: int = currency_id
+        self.id = id_
+        self.user_id = user_id
+        self.currency_id = currency_id
 
     @property
     def id(self) -> int:
@@ -27,56 +24,56 @@ class UserCurrency:
         return self.__id
 
     @id.setter
-    def id(self, id: int) -> None:
+    def id(self, value: int) -> None:
         """Устанавливает уникальный идентификатор записи.
 
         Args:
-            id: Уникальный идентификатор.
+            value: Уникальный идентификатор.
 
         Raises:
-            ValueError: Если ID не целое число или не больше 0.
+            ValueError: Если значение не является целым положительным числом.
         """
-        if type(id) is int and id > 0:
-            self.__id = id
+        if isinstance(value, int) and value > 0:
+            self.__id = value
         else:
-            raise ValueError('Ошибка при задании уникального идентификатора')
+            raise ValueError("Ошибка при задании уникального идентификатора")
 
     @property
     def user_id(self) -> int:
-        """Возвращает ID пользователя."""
+        """Возвращает идентификатор пользователя."""
         return self.__user_id
 
     @user_id.setter
-    def user_id(self, user_id: int) -> None:
-        """Устанавливает ID пользователя.
+    def user_id(self, value: int) -> None:
+        """Устанавливает идентификатор пользователя.
 
         Args:
-            user_id: ID пользователя.
+            value: Идентификатор пользователя.
 
         Raises:
-            ValueError: Если ID не целое число или не больше 0.
+            ValueError: Если значение не является целым положительным числом.
         """
-        if type(user_id) is int and user_id > 0:
-            self.__user_id = user_id
+        if isinstance(value, int) and value > 0:
+            self.__user_id = value
         else:
-            raise ValueError('Ошибка при задании ID пользователя')
+            raise ValueError("Ошибка при задании ID пользователя")
 
     @property
     def currency_id(self) -> int:
-        """Возвращает ID валюты."""
+        """Возвращает идентификатор валюты."""
         return self.__currency_id
 
     @currency_id.setter
-    def currency_id(self, currency_id: int) -> None:
-        """Устанавливает ID валюты.
+    def currency_id(self, value: int) -> None:
+        """Устанавливает идентификатор валюты.
 
         Args:
-            currency_id: ID валюты.
+            value: Идентификатор валюты.
 
         Raises:
-            ValueError: Если ID не целое число или не больше 0.
+            ValueError: Если значение не является целым положительным числом.
         """
-        if type(currency_id) is int and currency_id > 0:
-            self.__currency_id = currency_id
+        if isinstance(value, int) and value > 0:
+            self.__currency_id = value
         else:
-            raise ValueError('Ошибка при задании идентификатора валюты')
+            raise ValueError("Ошибка при задании идентификатора валюты")
