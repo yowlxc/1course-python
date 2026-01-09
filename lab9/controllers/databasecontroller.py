@@ -41,8 +41,8 @@ class DatabaseController:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             currency_id INTEGER NOT NULL,
-            FOREIGN KEY(user_id) REFERENCES user(id),
-            FOREIGN KEY(currency_id) REFERENCES currency(id),
+            FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE,
+            FOREIGN KEY(currency_id) REFERENCES currency(id) ON DELETE CASCADE,
             UNIQUE(user_id, currency_id)
         )
         ''')

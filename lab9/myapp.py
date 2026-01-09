@@ -51,7 +51,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     users=users,
                     navigation=[
                         {'caption': 'Основная страница', 'href': '/'},
-                        {'caption': 'Пользователи', 'href': '/users'},
                         {'caption': 'Об авторе', 'href': '/author'}
                     ]
                 )
@@ -95,6 +94,71 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     app={'version': '1.0'},
                     navigation=[...]
                 )
+
+            elif path == '/currency/delete':
+                currency_id = query.get('id', [None])[0]
+                if currency_id and currency_id.isdigit():
+                    db.delete_currency(int(currency_id))
+                self.send_response(302)
+                self.send_header('Location', '/currencies')
+                self.end_headers()
+                return
+
+            elif path == '/currency/delete':
+                currency_id = query.get('id', [None])[0]
+                if currency_id and currency_id.isdigit():
+                    db.delete_currency(int(currency_id))
+                self.send_response(302)
+                self.send_header('Location', '/currencies')
+                self.end_headers()
+                return
+
+            elif path == '/currency/update':
+                currency_id = query.get('id', [None])[0]
+                new_value = query.get('value', [None])[0]
+                if currency_id and currency_id.isdigit() and new_value:
+                    try:
+                        db.update_currency_value(int(currency_id), float(new_value))
+                    except ValueError:
+                        pass  # игнорируем некорректное значение
+                self.send_response(302)
+                self.send_header('Location', '/currencies')
+                self.end_headers()
+                return
+
+            elif path == '/currencies/update_all':
+                # Обновляем все курсы из API
+                from utils.currencies_api import get_currencies
+                raw_currencies = get_currencies()  # получаем словарь {'USD': 77.5, ...}
+
+                # Получаем все валюты из БД
+                currencies = db.get_all_currencies()
+                for curr in currencies:
+                    char_code = curr['char_code']
+                    if char_code in raw_currencies:
+                        db.update_currency_value(curr['id'], raw_currencies[char_code])
+
+                self.send_response(302)
+                self.send_header('Location', '/currencies')
+                self.end_headers()
+                return
+            
+            elif path == '/currency/update_from_api':
+                currency_id = query.get('id', [None])[0]
+                if currency_id and currency_id.isdigit():
+                    # Получаем валюту из БД, чтобы узнать char_code
+                    currency = db.get_currency_by_id(int(currency_id))
+                    if currency:
+                        from utils.currencies_api import get_currencies
+                        api_data = get_currencies()  # словарь: {'USD': 77.5, ...}
+                        char_code = currency['char_code']
+                        if char_code in api_data:
+                            new_value = api_data[char_code]
+                            db.update_currency_value(int(currency_id), new_value)
+                self.send_response(302)
+                self.send_header('Location', '/currencies')
+                self.end_headers()
+                return
 
             else:
                 result = "<h1>404 — Страница не найдена</h1>"

@@ -1,17 +1,44 @@
 <h2>Валюты</h2>
+
+<!-- Кнопка обновления всех курсов -->
+<p>
+    <a href="/currencies/update_all" class="btn btn-sm btn-primary">Обновить все курсы из API</a>
+</p>
+
 <table id="currencies" class="table table-striped">
     <tr>
-        <th>ID</th><th>NumCode</th><th>CharCode</th><th>Name</th><th>Value</th><th>Nominal</th><th>Действия</th>
-            </tr>
-            {% for item in currencies %}
-            <tr>
-                <td>{{ item.id }}</td>
-                <td>{{ item.num_code }}</td>
-                <td>{{ item.char_code }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.value }}</td>
-                <td>{{ item.nominal }}</td>
-                <td><a href="/currency/delete?id={{item.id}}">Удалить</a></td>
-            </tr>
-            {% endfor %}
+        <th>ID</th>
+        <th>Цифровой код</th>
+        <th>Символьный код</th>
+        <th>Название</th>
+        <th>Курс валюты</th>
+        <th>Номинал</th>
+        <th>Действия</th>
+    </tr>
+    {% for item in currencies %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.num_code }}</td>
+        <td>{{ item.char_code }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ "%.4f"|format(item.value) }}</td>
+        <td>{{ item.nominal }}</td>
+        <td>
+<td>
+    <a href="/currency/update_from_api?id={{ item.id }}"
+       class="btn btn-sm btn-success"
+       style="font-size:12px; margin-right:5px;">
+        Обновить
+    </a>
+    |
+    <a href="/currency/delete?id={{ item.id }}"
+       onclick="return confirm('Удалить валюту {{ item.char_code }}?')"
+       style="color:red; font-size:12px;">
+        Удалить
+    </a>
+</td>
+        </td>
+    </tr>
+    {% endfor %}
 </table>
+<a href="/">На главную</a>

@@ -1,0 +1,33 @@
+<h2>Пользователь: {{ user.name }}</h2>
+
+<p><strong>ID:</strong> {{ user.id }}</p>
+<p><strong>Имя:</strong> {{ user.name }}</p>
+
+<h3>Подписки на валюты</h3>
+
+{% if currencies %}
+<table id="subscriptions" class="table table-striped">
+    <tr>
+        <th>Цифровой код</th>
+        <th>Символьный код</th>
+        <th>Название валюты</th>
+        <th>Номинал</th>
+        <th>Текущий курс</th>
+    </tr>
+    {% for currency in currencies %}
+    <tr>
+        <td>{{ currency.num_code }}</td>
+        <td>{{ currency.char_code }}</td>
+        <td>{{ currency.name }}</td>
+        <td>{{ currency.nominal }}</td>
+        <td>{{ "%.4f"|format(currency.value) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</script>
+
+{% else %}
+<p>У пользователя нет подписок на валюты</p>
+{% endif %}
+
+<p><a href="/users">Вернуться к списку пользователей</a></p>
