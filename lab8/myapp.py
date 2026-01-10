@@ -30,6 +30,7 @@ navigation = [
     {'caption': 'Основная страница', 'href': '/'},
     {'caption': 'Пользователи', 'href': '/users'},
     {'caption': 'Курсы валют', 'href': '/courses'},
+    {'caption': 'Информация об авторе', 'href': '/author'},
 ]
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -47,6 +48,8 @@ class MyHandler(BaseHTTPRequestHandler):
         try:
             if path == '/':
                 self._render_index()
+            elif path == '/author':
+                self._render_author()
             elif path == '/users':
                 self._render_users()
             elif path == '/courses':
@@ -58,12 +61,11 @@ class MyHandler(BaseHTTPRequestHandler):
                 for char_code, value in raw_currencies.items():
                     if isinstance(value, (int, float)):
                         currencies.append(Currency(
-                            id=char_code,
                             num_code=0,          # Заглушка (в JSON-API нет num_code)
                             char_code=char_code,
                             name=f"Валюта {char_code}",
                             value=value,
-                            nominal=1
+                            nominal=1.0
                         ))
                 
                 self._render_courses(currencies)
@@ -92,12 +94,12 @@ class MyHandler(BaseHTTPRequestHandler):
                     code = sub.currency_id
                     if code in raw_currencies and isinstance(raw_currencies[code], (int, float)):
                         user_currency_list.append(Currency(
-                            id=code,
+                            # id=code,
                             num_code=0,
                             char_code=code,
                             name=f"Валюта {code}",
                             value=raw_currencies[code],
-                            nominal=1
+                            nominal=1.0
                         ))
                 
                 self._render_user(user, user_currency_list) 
@@ -125,6 +127,16 @@ class MyHandler(BaseHTTPRequestHandler):
         html = template.render(
             author_name = main_author.name,
             group = main_author.group,
+            navigation=navigation
+        )
+        self._send_html(html)
+
+    def _render_author(self):
+        template = env.get_template("author.html")
+        html = template.render(
+            author_name = main_author.name,
+            group = main_author.group,
+            app = main_app.version,
             navigation=navigation
         )
         self._send_html(html)
