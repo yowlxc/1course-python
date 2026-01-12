@@ -17,7 +17,8 @@
 
     <ul id="users">
     {% for user in users %}
-        <li>{{ user.id }} - {{ user.name }}</li>
+        <td>{{ user.id }}</td>
+        - <a href="/user?id={{ user.id }}">{{ user.name }}</a><br>
     {% endfor %}
     </ul>
 

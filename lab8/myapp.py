@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from models import Author, App, User, Currency, UserCurrency
 from utils.currencies_api import get_currencies
 
-# === Глобальные данные ===
+# Глобальные данные
 main_author = Author('Nastya Pirogova', 'P3121')
 main_app = App(name="Currency Tracker", version="1.0", author=main_author)
 
@@ -54,14 +54,13 @@ class MyHandler(BaseHTTPRequestHandler):
                 self._render_users()
             elif path == '/courses':
                 # Получаем курсы как словарь
-                raw_currencies = get_currencies()  # Теперь работает без аргументов
+                raw_currencies = get_currencies() 
                 
-                # Преобразуем в список объектов Currency
                 currencies = []
                 for char_code, value in raw_currencies.items():
                     if isinstance(value, (int, float)):
                         currencies.append(Currency(
-                            num_code=0,          # Заглушка (в JSON-API нет num_code)
+                            num_code=0,         
                             char_code=char_code,
                             name=f"Валюта {char_code}",
                             value=value,

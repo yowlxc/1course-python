@@ -1,5 +1,3 @@
-"""Тесты контроллера для lab8 (глобальные списки, без БД)."""
-
 import unittest
 import os
 import sys
@@ -64,12 +62,12 @@ class TestController(unittest.TestCase):
         """Тест страницы об авторе."""
         template = self.env.get_template("author.html")
         html = template.render(
-            author=self.main_author,
-            app={"version": "1.0"},
+            author_name=self.main_author.name,  # "Nastya Pirogova"
+            group=self.main_author.group,       # "P3121"
+            app="1.0",
             navigation=self.navigation
         )
-
-        self.assertIn("Настя Пирогова", html)
+        self.assertIn("Nastya Pirogova", html)
         self.assertIn("P3121", html)
         self.assertIn("1.0", html)
 
