@@ -1,6 +1,6 @@
 import unittest
 import math
-from iter_1 import integrate
+from iter1 import integrate
 
 # тесты
 class TestMath(unittest.TestCase):

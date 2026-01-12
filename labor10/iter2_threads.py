@@ -3,7 +3,7 @@ from typing import Callable
 import concurrent.futures as ftres
 from functools import partial
 import timeit
-from iter_1 import integrate
+from iter1 import integrate
 
 
 def integrate_threads(f: Callable[[float], float], a: float, b: float, *, n_jobs: int = 2, n_iter: int = 1000) -> float:
