@@ -19,7 +19,7 @@
    5. userCurrency : подписка на валюту, хранит id некоторого пользователя и некоторой валюты
 
 3. Структура проекта
-   <img width="1256" height="994" alt="image" src="https://github.com/user-attachments/assets/cde9d93d-2796-4a42-9e50-917f81e24fde" />
+   <img width="1390" height="1032" alt="image" src="https://github.com/user-attachments/assets/48e81de6-a444-4610-bd2a-63c97c4108c5" />
    1. models - модели, описаны выше
    2. templates - html-шаблоны, создают страницы index (главная), author (информация об авторе), courses (таблица с курсами валют), users (список пользователей сайта)
    3. utils/currencies_api.py - функция get_currencies, получающая актуальные курсы валют 
@@ -37,7 +37,9 @@
 5. Примеры работы приложения:
    <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/38044372-e172-4487-89d7-1ea051d47c4e" />
    <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/5da3531d-eaae-460a-9d3c-00d09db22eb9" />
-   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/34af7b8a-a505-4561-9701-9c51de753d95" />
+   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/ded25bef-dc60-4ee4-a77e-cdbaa89bcebf" />
+   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/8a90644c-3599-4239-8a29-c7c0f0c65bc9" />
+
 
 6. Тестирование:
    get _cur_test.py
