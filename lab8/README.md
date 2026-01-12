@@ -23,4 +23,44 @@
    1. models - модели, описаны выше
    2. templates - html-шаблоны, создают страницы index (главная), author (информация об авторе), courses (таблица с курсами валют), users (список пользователей сайта)
    3. utils/currencies_api.py - функция get_currencies, получающая актуальные курсы валют 
+   4. controller_test.py - тесты контроллеров внутри myapp.py, models_test - тесты моделей, get_cur_test - тест функции get_currencies.
+   5. myapp.py - главный файл, запускающий сервер. Внутри него рендерятся страницы.
+
+4. Описание реализации
+   1. геттеры получают значения, сеттеры устанавливают значения и проверяют их на корректность. Например, author.group должно меть не менее 5 символов в строке.
+   2. после запуска сервера пользователь попадает на страницу index ('/'). при переходе на следующие страницы формируется соответствующий маршрут ('/users' для страницы, соответсвующей шаблону users.html)
+   3. <img width="900" height="204" alt="image" src="https://github.com/user-attachments/assets/842288f9-da95-4522-83a7-bccfd1d89e61" />
+      Страницы создаются с помощью Jinja2. C помощью FileSystemLoader Jinja2 использует в качестве html-шаблонов папку templates. При активации маршрутов происходит рендеринг соответствующих маршруту html-файлов (это происходит в myapp.py)
+   4. get_currencies находится в utils/currencies_api.py и используется для получения словаря, при рендеринге передающегося в courses.html
+      <img width="1138" height="582" alt="image" src="https://github.com/user-attachments/assets/11568ed9-a9f3-4a2e-b4de-3a5228a82a5b" />
+
+5. Примеры работы приложения:
+   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/38044372-e172-4487-89d7-1ea051d47c4e" />
+   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/5da3531d-eaae-460a-9d3c-00d09db22eb9" />
+   <img width="3024" height="1964" alt="image" src="https://github.com/user-attachments/assets/34af7b8a-a505-4561-9701-9c51de753d95" />
+
+6. Тестирование:
+   get _cur_test.py
+   <img width="1390" height="1508" alt="image" src="https://github.com/user-attachments/assets/a1092c26-003e-4f1d-b408-259617a139d2" />
+   Вывод: Ran 4 tests in 0.001s
+OK
+
+   models_test.py
+   <img width="1390" height="1224" alt="image" src="https://github.com/user-attachments/assets/b4780c58-dd2e-400d-8591-274fc677ef5e" />
+   Вывод: Ran 3 tests in 0.000s
+OK
+
+   contoller_test.py
+   <img width="1390" height="1508" alt="image" src="https://github.com/user-attachments/assets/994c8b97-a6eb-4f9c-8bb9-56be8a7d1b79" />
+   Вывод: Ran 4 tests in 0.038s
+OK
+
+7. Выводы
+   В ходе выполнения лабораторной работы было успешно реализовано клиент-серверное приложение на чистом Python без использования сторонних веб-фреймворков. Я изучила и применила основы веб-разработки: обработка HTTP-запросов через http.server, маршрутизация, работа с шаблонами и управление данными. Была применена архитектура MVC: model, view, controller. Кроме того, был разработан полный набор автоматизированных тестов. Все тесты проходят успешно, что подтверждает корректность реализации и устойчивость приложения к некорректным входным данным.
+
+   
+
+
+ 
+   
 
